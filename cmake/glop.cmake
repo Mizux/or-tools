@@ -63,6 +63,14 @@ add_library(glop SHARED
   "ortools/base/file.h"
   "ortools/base/sysinfo.cc"
   "ortools/base/sysinfo.h"
+  "ortools/base/logging.cc"
+  "ortools/base/logging.h"
+  "ortools/base/logging_utilities.cc"
+  "ortools/base/logging_utilities.h"
+  "ortools/base/raw_logging.cc"
+  "ortools/base/raw_logging.h"
+  "ortools/base/vlog_is_on.cc"
+  "ortools/base/vlog_is_on.h"
   "ortools/glop/basis_representation.cc"
   "ortools/glop/basis_representation.h"
   "ortools/glop/dual_edge_norms.cc"
@@ -201,6 +209,9 @@ set_target_properties(glop PROPERTIES INTERFACE_glop_MAJOR_VERSION ${PROJECT_VER
 set_target_properties(glop PROPERTIES COMPATIBLE_INTERFACE_STRING glop_MAJOR_VERSION)
 
 # Dependencies
+target_sources(glop PRIVATE $<TARGET_OBJECTS:glop_proto>)
+add_dependencies(glop glop_proto)
+
 target_link_libraries(glop PUBLIC
   absl::memory
   absl::hash
@@ -211,7 +222,6 @@ target_link_libraries(glop PUBLIC
   absl::statusor
   absl::container
   absl::str_format
-  glop_proto
   protobuf::libprotobuf
   )
 if(WIN32)
@@ -235,3 +245,65 @@ file(GENERATE
 target_sources(glopbin PRIVATE ${PROJECT_BINARY_DIR}/glop/main.cpp)
 
 target_link_libraries(glopbin PRIVATE glop)
+
+# Install rules
+include(GNUInstallDirs)
+include(GenerateExportHeader)
+GENERATE_EXPORT_HEADER(glop)
+install(FILES ${PROJECT_BINARY_DIR}/glop_export.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+install(TARGETS glop
+  EXPORT glopTargets
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  )
+
+install(EXPORT glopTargets
+  NAMESPACE glop::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/glop)
+
+# glop headers
+install(DIRECTORY ortools/glop
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools
+  COMPONENT Devel
+  FILES_MATCHING
+  PATTERN "*.h")
+# dependencies headers
+install(FILES
+  ortools/base/logging.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/base
+  COMPONENT Devel)
+# proto headers
+install(FILES
+  ${PROJECT_BINARY_DIR}/ortools/glop/parameters.pb.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/glop
+  COMPONENT Devel)
+install(FILES
+  ${PROJECT_BINARY_DIR}/ortools/linear_solver/linear_solver.pb.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/linear_solver
+  COMPONENT Devel)
+install(FILES
+  ${PROJECT_BINARY_DIR}/ortools/util/optional_boolean.pb.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/util
+  COMPONENT Devel)
+
+include(CMakePackageConfigHelpers)
+string (TOUPPER "glop" PACKAGE_PREFIX)
+configure_package_config_file(cmake/glopConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/glopConfig.cmake"
+  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/glop"
+  NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+write_basic_package_version_file(
+  "${PROJECT_BINARY_DIR}/glopConfigVersion.cmake"
+  COMPATIBILITY SameMajorVersion
+  )
+install(
+  FILES
+  "${PROJECT_BINARY_DIR}/glopConfig.cmake"
+  "${PROJECT_BINARY_DIR}/glopConfigVersion.cmake"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/glop"
+  COMPONENT Devel)
+
