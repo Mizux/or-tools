@@ -1,0 +1,44 @@
+name: Glop CI
+
+on: [push, pull_request]
+
+# Building using the github runner environement directly.
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check cmake
+      run: cmake --version
+    - name: Configure
+      run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DBUILD_DEPS=ON -DBUILD_CXX=OFF -DBUILD_GLOP=ON
+    - name: Build
+      run: cmake --build build --config Release --target all -v
+    - name: Install
+      run: cmake --build build --config Release --target install -v -- DESTDIR=install
+
+  macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check cmake
+      run: cmake --version
+    - name: Configure
+      run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DBUILD_DEPS=ON -DBUILD_CXX=OFF -DBUILD_GLOP=ON
+    - name: Build
+      run: cmake --build build --target all -v
+    - name: Install
+      run: cmake --build build --target install -v -- DESTDIR=install
+
+  windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check cmake
+      run: cmake --version
+    - name: Configure
+      run: cmake -S. -Bbuild -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DBUILD_DEPS=ON -DBUILD_CXX=OFF -DBUILD_GLOP=ON
+    - name: Build
+      run: cmake --build build --config Release --target ALL_BUILD -- /maxcpucount
+    - name: Install
+      run: cmake --build build --config Release --target INSTALL -- /maxcpucount
