@@ -204,9 +204,11 @@ set_target_properties(glop PROPERTIES COMPATIBLE_INTERFACE_STRING glop_MAJOR_VER
 target_link_libraries(glop PUBLIC
   absl::memory
   absl::hash
+  absl::flags
   absl::status
   absl::time
   absl::strings
+  absl::statusor
   absl::container
   absl::str_format
   glop_proto
