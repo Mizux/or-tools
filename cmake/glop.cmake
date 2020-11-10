@@ -59,79 +59,83 @@ target_link_libraries(glop_proto PRIVATE protobuf::libprotobuf)
 
 # Main Target
 add_library(glop SHARED
-  "ortools/base/file.cc"
-  "ortools/base/file.h"
-  "ortools/base/sysinfo.cc"
-  "ortools/base/sysinfo.h"
-  "ortools/base/logging.cc"
-  "ortools/base/logging.h"
-  "ortools/base/logging_utilities.cc"
-  "ortools/base/logging_utilities.h"
-  "ortools/base/raw_logging.cc"
-  "ortools/base/raw_logging.h"
-  "ortools/base/vlog_is_on.cc"
-  "ortools/base/vlog_is_on.h"
-  "ortools/glop/basis_representation.cc"
-  "ortools/glop/basis_representation.h"
-  "ortools/glop/dual_edge_norms.cc"
-  "ortools/glop/dual_edge_norms.h"
-  "ortools/glop/entering_variable.cc"
-  "ortools/glop/entering_variable.h"
-  "ortools/glop/initial_basis.cc"
-  "ortools/glop/initial_basis.h"
-  "ortools/glop/lp_solver.cc"
-  "ortools/glop/lp_solver.h"
-  "ortools/glop/lu_factorization.cc"
-  "ortools/glop/lu_factorization.h"
-  "ortools/glop/markowitz.cc"
-  "ortools/glop/markowitz.h"
-  "ortools/glop/preprocessor.cc"
-  "ortools/glop/preprocessor.h"
-  "ortools/glop/primal_edge_norms.cc"
-  "ortools/glop/primal_edge_norms.h"
-  "ortools/glop/reduced_costs.cc"
-  "ortools/glop/reduced_costs.h"
-  "ortools/glop/revised_simplex.cc"
-  "ortools/glop/revised_simplex.h"
-  "ortools/glop/status.cc"
-  "ortools/glop/status.h"
-  "ortools/glop/update_row.cc"
-  "ortools/glop/update_row.h"
-  "ortools/glop/variable_values.cc"
-  "ortools/glop/variable_values.h"
-  "ortools/glop/variables_info.cc"
-  "ortools/glop/variables_info.h"
-  "ortools/lp_data/lp_data.cc"
-  "ortools/lp_data/lp_data.h"
-  "ortools/lp_data/lp_data_utils.cc"
-  "ortools/lp_data/lp_data_utils.h"
-  "ortools/lp_data/lp_print_utils.cc"
-  "ortools/lp_data/lp_print_utils.h"
-  "ortools/lp_data/lp_types.cc"
-  "ortools/lp_data/lp_types.h"
-  "ortools/lp_data/lp_utils.cc"
-  "ortools/lp_data/lp_utils.h"
-  "ortools/lp_data/matrix_scaler.cc"
-  "ortools/lp_data/matrix_scaler.h"
-  "ortools/lp_data/matrix_utils.cc"
-  "ortools/lp_data/matrix_utils.h"
-  "ortools/lp_data/proto_utils.cc"
-  "ortools/lp_data/proto_utils.h"
-  "ortools/lp_data/sparse.cc"
-  "ortools/lp_data/sparse.h"
-  "ortools/lp_data/sparse_column.cc"
-  "ortools/port/sysinfo.h"
-  "ortools/port/sysinfo_nonport.cc"
-  "ortools/util/file_util.cc"
-  "ortools/util/file_util.h"
-  "ortools/util/fp_utils.cc"
-  "ortools/util/fp_utils.h"
-  "ortools/util/rational_approximation.cc"
-  "ortools/util/rational_approximation.h"
-  "ortools/util/stats.cc"
-  "ortools/util/stats.h"
-  "ortools/util/time_limit.cc"
-  "ortools/util/time_limit.h"
+  ortools/base/commandlineflags.h
+  ortools/base/file.cc
+  ortools/base/file.h
+  ortools/base/integral_types.h
+  ortools/base/log_severity.h
+  ortools/base/logging.cc
+  ortools/base/logging.h
+  ortools/base/logging_utilities.cc
+  ortools/base/logging_utilities.h
+  ortools/base/macros.h
+  ortools/base/raw_logging.cc
+  ortools/base/raw_logging.h
+  ortools/base/sysinfo.cc
+  ortools/base/sysinfo.h
+  ortools/base/vlog_is_on.cc
+  ortools/base/vlog_is_on.h
+  ortools/glop/basis_representation.cc
+  ortools/glop/basis_representation.h
+  ortools/glop/dual_edge_norms.cc
+  ortools/glop/dual_edge_norms.h
+  ortools/glop/entering_variable.cc
+  ortools/glop/entering_variable.h
+  ortools/glop/initial_basis.cc
+  ortools/glop/initial_basis.h
+  ortools/glop/lp_solver.cc
+  ortools/glop/lp_solver.h
+  ortools/glop/lu_factorization.cc
+  ortools/glop/lu_factorization.h
+  ortools/glop/markowitz.cc
+  ortools/glop/markowitz.h
+  ortools/glop/preprocessor.cc
+  ortools/glop/preprocessor.h
+  ortools/glop/primal_edge_norms.cc
+  ortools/glop/primal_edge_norms.h
+  ortools/glop/reduced_costs.cc
+  ortools/glop/reduced_costs.h
+  ortools/glop/revised_simplex.cc
+  ortools/glop/revised_simplex.h
+  ortools/glop/status.cc
+  ortools/glop/status.h
+  ortools/glop/update_row.cc
+  ortools/glop/update_row.h
+  ortools/glop/variable_values.cc
+  ortools/glop/variable_values.h
+  ortools/glop/variables_info.cc
+  ortools/glop/variables_info.h
+  ortools/lp_data/lp_data.cc
+  ortools/lp_data/lp_data.h
+  ortools/lp_data/lp_data_utils.cc
+  ortools/lp_data/lp_data_utils.h
+  ortools/lp_data/lp_print_utils.cc
+  ortools/lp_data/lp_print_utils.h
+  ortools/lp_data/lp_types.cc
+  ortools/lp_data/lp_types.h
+  ortools/lp_data/lp_utils.cc
+  ortools/lp_data/lp_utils.h
+  ortools/lp_data/matrix_scaler.cc
+  ortools/lp_data/matrix_scaler.h
+  ortools/lp_data/matrix_utils.cc
+  ortools/lp_data/matrix_utils.h
+  ortools/lp_data/proto_utils.cc
+  ortools/lp_data/proto_utils.h
+  ortools/lp_data/sparse.cc
+  ortools/lp_data/sparse.h
+  ortools/lp_data/sparse_column.cc
+  ortools/port/sysinfo.h
+  ortools/port/sysinfo_nonport.cc
+  ortools/util/file_util.cc
+  ortools/util/file_util.h
+  ortools/util/fp_utils.cc
+  ortools/util/fp_utils.h
+  ortools/util/rational_approximation.cc
+  ortools/util/rational_approximation.h
+  ortools/util/stats.cc
+  ortools/util/stats.h
+  ortools/util/time_limit.cc
+  ortools/util/time_limit.h
   )
 
 if(WIN32)
@@ -251,7 +255,8 @@ include(GNUInstallDirs)
 include(GenerateExportHeader)
 GENERATE_EXPORT_HEADER(glop)
 install(FILES ${PROJECT_BINARY_DIR}/glop_export.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/glop
+  COMPONENT Devel)
 
 install(TARGETS glop
   EXPORT glopTargets
@@ -262,7 +267,7 @@ install(TARGETS glop
   )
 
 install(EXPORT glopTargets
-  NAMESPACE glop::
+  NAMESPACE ortools::
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/glop)
 
 # glop headers
@@ -273,8 +278,53 @@ install(DIRECTORY ortools/glop
   PATTERN "*.h")
 # dependencies headers
 install(FILES
+  ortools/base/basictypes.h
+  ortools/base/commandlineflags.h
+  ortools/base/file.h
+  ortools/base/hash.h
+  ortools/base/int_type.h
+  ortools/base/int_type_indexed_vector.h
+  ortools/base/integral_types.h
+  ortools/base/log_severity.h
   ortools/base/logging.h
+  ortools/base/logging_utilities.h
+  ortools/base/macros.h
+  ortools/base/raw_logging.h
+  ortools/base/recordio.h
+  ortools/base/sysinfo.h
+  ortools/base/timer.h
+  ortools/base/vlog_is_on.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/base
+  COMPONENT Devel)
+install(FILES
+  ortools/lp_data/lp_data.h
+  ortools/lp_data/permutation.h
+  ortools/lp_data/scattered_vector.h
+  ortools/lp_data/sparse_column.h
+  ortools/lp_data/sparse_row.h
+  ortools/lp_data/lp_types.h
+  ortools/lp_data/lp_utils.h
+  ortools/lp_data/matrix_scaler.h
+  ortools/lp_data/matrix_utils.h
+  ortools/lp_data/proto_utils.h
+  ortools/lp_data/sparse.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/lp_data
+  COMPONENT Devel)
+install(FILES
+  ortools/port/sysinfo.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/port
+  COMPONENT Devel)
+install(FILES
+  ortools/util/bitset.h
+  ortools/util/file_util.h
+  ortools/util/fp_utils.h
+  ortools/util/random_engine.h
+  ortools/util/rational_approximation.h
+  ortools/util/return_macros.h
+  ortools/util/running_stat.h
+  ortools/util/stats.h
+  ortools/util/time_limit.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/util
   COMPONENT Devel)
 # proto headers
 install(FILES
