@@ -278,6 +278,7 @@ install(DIRECTORY ortools/glop
   PATTERN "*.h")
 # dependencies headers
 install(FILES
+  ortools/base/accurate_sum.h
   ortools/base/basictypes.h
   ortools/base/commandlineflags.h
   ortools/base/file.h
@@ -303,13 +304,19 @@ install(FILES
   ortools/lp_data/scattered_vector.h
   ortools/lp_data/sparse_column.h
   ortools/lp_data/sparse_row.h
+  ortools/lp_data/sparse_vector.h
   ortools/lp_data/lp_types.h
   ortools/lp_data/lp_utils.h
+  ortools/lp_data/lp_print_utils.h
   ortools/lp_data/matrix_scaler.h
   ortools/lp_data/matrix_utils.h
   ortools/lp_data/proto_utils.h
   ortools/lp_data/sparse.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/lp_data
+  COMPONENT Devel)
+install(FILES
+  ortools/graph/iterators.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ortools/graph
   COMPONENT Devel)
 install(FILES
   ortools/port/sysinfo.h
