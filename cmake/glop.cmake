@@ -287,6 +287,7 @@ install(FILES
   ortools/base/integral_types.h
   ortools/base/log_severity.h
   ortools/base/logging.h
+  ortools/base/logging_export.h
   ortools/base/logging_utilities.h
   ortools/base/macros.h
   ortools/base/raw_logging.h
