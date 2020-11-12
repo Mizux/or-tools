@@ -1,47 +1,54 @@
 #include <iostream>
 #include <ortools/glop/lp_solver.h>
+#include <ortools/lp_data/lp_data.h>
+#include <ortools/lp_data/lp_types.h>
 
 namespace operations_research::glop {
-void RunLinearExample() {
-  LPSolver solver;
+  int RunLinearExample() {
+    LinearProgram linear_program;
+    // Create the variables x and y.
+    ColIndex col_x = linear_program.FindOrCreateVariable("x");
+    linear_program.SetVariableBounds(col_x, 0.0, 1.0);
+    ColIndex col_y = linear_program.FindOrCreateVariable("y");
+    linear_program.SetVariableBounds(col_y, 0.0, 2.0);
 
-  // x and y are non-negative variables.
-  MPVariable* const x = solver.MakeNumVar(0.0, infinity, "x");
-  MPVariable* const y = solver.MakeNumVar(0.0, infinity, "y");
-  // Objective function: 3x + 4y.
-  MPObjective* const objective = solver.MutableObjective();
-  objective->SetCoefficient(x, 3);
-  objective->SetCoefficient(y, 4);
-  objective->SetMaximization();
-  // x + 2y <= 14.
-  MPConstraint* const c0 = solver.MakeRowConstraint(-infinity, 14.0);
-  c0->SetCoefficient(x, 1);
-  c0->SetCoefficient(y, 2);
+    // Create linear constraint: 0 <= x + y <= 2.
+    RowIndex row_r1 = linear_program.FindOrCreateConstraint("r1");
+    linear_program.SetConstraintBounds(row_r1, 0.0, 2.0);
+    linear_program.SetCoefficient(row_r1, col_x, 1);
+    linear_program.SetCoefficient(row_r1, col_y, 1);
 
-  // 3x - y >= 0.
-  MPConstraint* const c1 = solver.MakeRowConstraint(0.0, infinity);
-  c1->SetCoefficient(x, 3);
-  c1->SetCoefficient(y, -1);
+    // Create objective function: 3 * x + y.
+    linear_program.SetObjectiveCoefficient(col_x, 3);
+    linear_program.SetObjectiveCoefficient(col_y, 1);
+    linear_program.SetMaximizationProblem(true);
 
-  // x - y <= 2.
-  MPConstraint* const c2 = solver.MakeRowConstraint(-infinity, 2.0);
-  c2->SetCoefficient(x, 1);
-  c2->SetCoefficient(y, -1);
-	std::cout << "Number of variables = " << solver.NumVariables() << std::endl;
-  std::cout << "Number of constraints = " << solver.NumConstraints() << std::endl;
-  solver.Solve();
-  // The value of each variable in the solution.
-  std::cout << "Solution:" << std::endl
-  << "x = " << x->solution_value() << std::endl
-  << "y = " << y->solution_value() << std::endl;
+    linear_program.CleanUp();
 
-  // The objective value of the solution.
-	std::cout << "Optimal objective value = " << objective->Value() << std::endl;
-}
+    std::cout << "Number of variables = " << linear_program.num_variables() << std::endl;
+    std::cout << "Number of constraints = " << linear_program.num_constraints() << std::endl;
 
+    LPSolver solver;
+    GlopParameters parameters;
+    parameters.set_provide_strong_optimal_guarantee(true);
+    solver.SetParameters(parameters);
+
+    ProblemStatus status = solver.Solve(linear_program);
+    if (status == ProblemStatus::OPTIMAL) {
+      std::cout << "Optimal solution found !" << std::endl;
+      // The objective value of the solution.
+      std::cout << "Optimal objective value = " << solver.GetObjectiveValue() << std::endl;
+      // The value of each variable in the solution.
+      const DenseRow& values = solver.variable_values();
+      std::cout << "Solution:" << std::endl
+        << "x = " << values[0] << std::endl
+        << ", y = " << values[1] << std::endl;
+      return 0;
+    } else
+      return 1;
+  }
 }  // namespace operations_research::glop
 
 int main(int argc, char** argv) {
-	operations_research::glop::RunLinearExample();
-	return 0;
+  return operations_research::glop::RunLinearExample();
 }
